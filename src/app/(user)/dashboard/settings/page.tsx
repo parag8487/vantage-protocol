@@ -126,8 +126,8 @@ export default function SettingsPage() {
                                             key={charity.id}
                                             onClick={() => setSelectedCharity(charity.id)}
                                             className={`p-6 rounded-[2rem] border transition-all cursor-pointer group flex flex-col justify-between h-40 ${selectedCharity === charity.id
-                                                    ? 'bg-indigo-600 border-indigo-600 text-white shadow-xl shadow-indigo-100'
-                                                    : 'bg-white border-neutral-200 hover:border-indigo-400'
+                                                ? 'bg-indigo-600 border-indigo-600 text-white shadow-xl shadow-indigo-100'
+                                                : 'bg-white border-neutral-200 hover:border-indigo-400'
                                                 }`}
                                         >
                                             <p className="text-sm font-bold leading-tight">{charity.name}</p>
@@ -180,9 +180,16 @@ export default function SettingsPage() {
                                     <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                                     SSL/TLS 1.3 Encryption
                                 </div>
-                                <Button variant="secondary" className="w-full h-14 rounded-2xl font-black uppercase text-[10px] tracking-widest border-none bg-white hover:bg-neutral-100 text-neutral-900 mt-4">
+                                <Button
+                                    variant="secondary"
+                                    className="w-full h-14 rounded-2xl font-black uppercase text-[10px] tracking-widest border-none bg-white hover:bg-neutral-100 text-neutral-900 mt-4"
+                                    onClick={() => {
+                                        toast({ title: "Audit Protocol Initialized", description: "Analyzing 128-bit encrypted access records for Alexander Thorne." })
+                                    }}
+                                >
                                     Audit Access Logs
                                 </Button>
+
                             </CardContent>
                         </Card>
 

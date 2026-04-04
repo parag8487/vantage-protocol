@@ -5,9 +5,16 @@ export async function proxy(request: NextRequest) {
 
     const supabase = await createClient()
 
-    const {
+    let {
         data: { user },
     } = await supabase.auth.getUser()
+
+    // Vantage Demo Protocol: Bypass if local demo session is active
+    const demoSession = request.cookies.get('vantage-demo-session')?.value;
+    if (!user && demoSession) {
+        user = { id: demoSession, email: 'demo@vantage.golf' } as any;
+    }
+
 
     // 1. If trying to access dashboard/admin and NOT logged in -> Login
     if (!user && (request.nextUrl.pathname.startsWith('/dashboard') || request.nextUrl.pathname.startsWith('/admin'))) {

@@ -151,20 +151,34 @@ export default function AdminDrawsPage() {
                         </div>
 
                         {(isSimulating || simData) && (
-                            <div className="mt-20 p-10 bg-neutral-900 rounded-[2.5rem] text-emerald-400 font-mono text-xs space-y-4 animate-in fade-in slide-in-from-bottom-8">
-                                <p className="flex items-center gap-3">
-                                    <span className={`h-2 w-2 rounded-full ${isSimulating ? 'bg-emerald-500 animate-pulse' : 'bg-emerald-500'}`} />
-                                    [SYSTEM] : Oracle state: {isSimulating ? 'PROCESSING' : 'FINALIZED'}
-                                </p>
+                            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8">
+                                <div className="mt-20 p-10 bg-neutral-900 rounded-[2.5rem] text-emerald-400 font-mono text-xs space-y-4">
+                                    <p className="flex items-center gap-3">
+                                        <span className={`h-2 w-2 rounded-full ${isSimulating ? 'bg-emerald-500 animate-pulse' : 'bg-emerald-500'}`} />
+                                        [SYSTEM] : Oracle state: {isSimulating ? 'PROCESSING' : 'FINALIZED'}
+                                    </p>
+                                    {simData && (
+                                        <>
+                                            <p className="ml-5 text-indigo-400 font-black tracking-widest">[NUMBERS] : {simData.winningNumbers.join(', ')}</p>
+                                            <p className="ml-5 text-white/50">[STATS] : Matches(5): {simData.matches5} | Matches(4): {simData.matches4} | Matches(3): {simData.matches3}</p>
+                                            <p className="ml-5 text-emerald-500 font-bold">[POOL] : ${simData.poolTotal?.toLocaleString() || '50,000'} successfully partitioned.</p>
+                                        </>
+                                    )}
+                                </div>
                                 {simData && (
-                                    <>
-                                        <p className="ml-5 text-indigo-400 font-black tracking-widest">[NUMBERS] : {simData.winningNumbers.join(', ')}</p>
-                                        <p className="ml-5 text-white/50">[STATS] : Matches(5): {simData.matches5} | Matches(4): {simData.matches4} | Matches(3): {simData.matches3}</p>
-                                        <p className="ml-5 text-emerald-500 font-bold">[POOL] : ${simData.poolTotal?.toLocaleString() || '50,000'} successfully partitioned.</p>
-                                    </>
+                                    <div className="flex justify-end">
+                                        <Button
+                                            size="lg"
+                                            onClick={() => toast({ title: "Results Published", description: "Monthly draw results are now live in user dashboards." })}
+                                            className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl h-16 px-10 font-black uppercase text-[11px] tracking-[0.2em] shadow-2xl shadow-emerald-900/20"
+                                        >
+                                            <CheckCircle2 className="mr-3 h-4 w-4" /> Commit & Publish Results
+                                        </Button>
+                                    </div>
                                 )}
                             </div>
                         )}
+
                     </CardContent>
                 </Card>
             </div>

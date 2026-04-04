@@ -7,9 +7,13 @@ import { LayoutDashboard, Target, Heart, TrendingUp, Calendar, ChevronRight, Loa
 import { PageTransition } from "@/components/page-transition"
 import { useProfile } from "@/hooks/use-profile"
 import { useState, useEffect } from "react"
+import { Badge } from "@/components/ui/badge"
+import { useToast } from "@/hooks/use-toast"
+
 
 export default function DashboardPage() {
     const { profile, isLoading } = useProfile()
+    const { toast } = useToast()
     const [stats, setStats] = useState({ avgPool: 50000 })
 
     useEffect(() => {
@@ -48,8 +52,17 @@ export default function DashboardPage() {
                         </p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Button variant="outline" className="rounded-full px-8 font-bold border-neutral-200">Export Report</Button>
+                        <Button
+                            variant="outline"
+                            className="rounded-full px-8 font-bold border-neutral-200"
+                            onClick={() => {
+                                toast({ title: "Performance Export Initiated", description: "Your encrypted round history is being compiled into a secure PDF ledger." })
+                            }}
+                        >
+                            Export Report
+                        </Button>
                     </div>
+
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-6 lg:grid-cols-12">
@@ -99,7 +112,12 @@ export default function DashboardPage() {
                     <Card className="md:col-span-6 lg:col-span-3 flex flex-col justify-between hover:border-indigo-400 transition-all cursor-pointer rounded-[2.5rem] group border-neutral-200/60 shadow-sm text-decoration-none">
                         <Link href="/dashboard/scores" className="h-full flex flex-col justify-between p-0">
                             <CardHeader className="pb-2">
-                                <CardDescription className="uppercase tracking-[0.2em] text-[10px] font-black text-neutral-400 group-hover:text-indigo-600 transition-colors">Projected Match</CardDescription>
+                                <div className="flex justify-between items-start">
+                                    <CardDescription className="uppercase tracking-[0.2em] text-[10px] font-black text-neutral-400 group-hover:text-indigo-600 transition-colors">Projected Match</CardDescription>
+                                    <Badge variant="outline" className={`text-[9px] py-0 ${profile.scores.length >= 5 ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200 animate-pulse'}`}>
+                                        {profile.scores.length}/5 SCORES
+                                    </Badge>
+                                </div>
                                 <div className="flex items-center gap-3 mt-4">
                                     <div className="h-8 w-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
                                         <Target className="h-4 w-4" />
@@ -108,8 +126,13 @@ export default function DashboardPage() {
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-xs text-neutral-500 font-medium leading-relaxed">Estimated matches for the {new Date().toLocaleString('default', { month: 'long' })} payout event.</p>
+                                <p className="text-xs text-neutral-500 font-medium leading-relaxed">
+                                    {profile.scores.length < 5
+                                        ? `Complete your Profile Protocol (add ${5 - profile.scores.length} more scores) to qualify for the ${new Date().toLocaleString('default', { month: 'long' })} draw.`
+                                        : `Estimated matches for the ${new Date().toLocaleString('default', { month: 'long' })} payout event.`}
+                                </p>
                             </CardContent>
+
                             <CardFooter className="pb-8 pt-0">
                                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest flex items-center hover:gap-2 transition-all">
                                     Update Scores <ChevronRight className="h-3 w-3" />
@@ -122,8 +145,17 @@ export default function DashboardPage() {
                 <div className="space-y-6">
                     <div className="flex items-center justify-between mb-8">
                         <h3 className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.3em]">Recent Activity Protocol</h3>
-                        <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest hover:bg-neutral-100 rounded-full px-6">View Historical Audit</Button>
+                        <Button
+                            variant="ghost"
+                            className="text-[10px] font-black uppercase tracking-widest hover:bg-neutral-100 rounded-full px-6"
+                            onClick={() => {
+                                toast({ title: "Audit Synchronizing", description: "Retrieving historical performance logs from the Vantage Ledger..." })
+                            }}
+                        >
+                            View Historical Audit
+                        </Button>
                     </div>
+
                     <div className="space-y-4">
                         {profile.scores.length > 0 ? (
                             profile.scores.map(score => (

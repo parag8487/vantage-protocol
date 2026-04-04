@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
-import prisma from '@/lib/prisma';
+import { getPrisma } from '@/lib/prisma.server';
 
 
 export async function POST(req: Request) {
+    const prisma = getPrisma();
     try {
+
         const { id, email, firstName, lastName } = await req.json();
 
         const profile = await prisma.profile.upsert({

@@ -40,7 +40,9 @@ export function Navbar() {
                     </Link>
                     <div className="hidden md:flex gap-8">
                         <Link href="/charities" className="text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors underline-offset-4 hover:underline">Charities</Link>
+                        <Link href="/verification" className="text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors underline-offset-4 hover:underline">Verification</Link>
                         <Link href="/pricing" className="text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors underline-offset-4 hover:underline">Pricing</Link>
+
                         <Link href="/impact" className="text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors underline-offset-4 hover:underline">Our Impact</Link>
                     </div>
                 </div>

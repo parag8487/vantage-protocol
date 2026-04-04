@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 import { stripe } from '@/lib/stripe';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma.server';
 import Stripe from 'stripe';
 
 export async function POST(req: Request) {

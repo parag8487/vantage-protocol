@@ -26,7 +26,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         router.refresh()
     }
 
-    const userInitials = user?.email ? user.email.substring(0, 2).toUpperCase() : "JD"
+    const [userInitials, setUserInitials] = useState("JD")
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+        if (user?.user_metadata?.first_name) {
+            setUserInitials(`${user.user_metadata.first_name[0]}${user.user_metadata.last_name?.[0] || ''}`.toUpperCase())
+        } else {
+            const isDemo = typeof window !== 'undefined' && document.cookie.includes('vantage-demo-session');
+            if (isDemo || user?.id?.startsWith('demo_')) {
+                setUserInitials("AT")
+            } else {
+                setUserInitials("JD")
+            }
+        }
+    }, [user])
+
+    // Vantage Demo Protocol: Prevent hydration flicker by ensuring server-client parity on first pass
+    const displayInitials = mounted ? userInitials : "JD"
+
 
     return (
         <div className="min-h-screen bg-[#fafafa] flex flex-col font-outfit">
@@ -53,9 +72,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                             <Settings className="h-5 w-5" />
                         </Link>
                         <div className="h-9 w-9 rounded-full bg-neutral-900 flex items-center justify-center text-white font-black text-[10px] tracking-tighter shadow-lg rotate-3 hover:rotate-0 transition-transform cursor-pointer overflow-hidden group">
-                            <span className="group-hover:hidden">{userInitials}</span>
+                            <span className="group-hover:hidden">{displayInitials}</span>
                             <User className="h-4 w-4 hidden group-hover:block" />
                         </div>
+
                         <Button
                             variant="ghost"
                             size="sm"

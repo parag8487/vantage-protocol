@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
-import prisma from '@/lib/prisma'
+import prisma from '@/lib/prisma.server'
 
 /**
  * Handles Score Entry enforcing the 'Rolling 5' business logic.

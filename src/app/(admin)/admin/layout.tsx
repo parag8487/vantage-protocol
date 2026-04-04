@@ -2,7 +2,7 @@ import Link from "next/link"
 import { ReactNode } from "react"
 import { createClient } from "@/lib/supabase-server"
 import { redirect } from "next/navigation"
-import prisma from "@/lib/prisma"
+import prisma from "@/lib/prisma.server"
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
     const supabase = await createClient()
@@ -33,8 +33,12 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                         </Link>
                         <nav className="hidden md:flex gap-8">
                             <Link href="/admin" className="text-[10px] font-black uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Metrics</Link>
+                            <Link href="/admin/users" className="text-[10px] font-black uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Identity Deck</Link>
                             <Link href="/admin/draws" className="text-[10px] font-black uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Draw Engine</Link>
+
+                            <Link href="/admin/charities" className="text-[10px] font-black uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Charity Assets</Link>
                             <Link href="/admin/verifications" className="text-[10px] font-black uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Verifications</Link>
+
                         </nav>
                     </div>
                     <div className="flex items-center gap-6">

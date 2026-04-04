@@ -1,7 +1,7 @@
 import { stripe } from '@/lib/stripe';
 import { createClient } from '@/lib/supabase-server';
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma.server';
 
 export async function POST(req: Request) {
     try {
