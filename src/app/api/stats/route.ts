@@ -10,20 +10,22 @@ export async function GET() {
     try {
 
         const totalProfiles = await prisma.profile.count();
+        const activeSubscribers = await prisma.profile.count({ where: { subscriptionStatus: 'ACTIVE' } });
+        const pendingVerifications = await prisma.winning.count({ where: { status: 'PENDING_PROOF' } });
         const draws = await prisma.drawResult.findMany({ select: { poolTotal: true } });
 
         const totalPoolGenerated = draws.reduce((sum: number, d: any) => sum + d.poolTotal, 0);
 
         // Dynamic Pool Model: $10/subscriber contributed to monthly jackpot
-        const activeSubscribers = 12450 + totalProfiles;
         const dynamicMonthlyPool = activeSubscribers * 10;
 
-        // Simulate total impact based on subscription count if no real payments yet
-        const baseImpact = 1420000; // Starting baseline for "Wow" factor
-        const dynamicImpact = baseImpact + (totalProfiles * 29.99);
+        // Total Philanthropy: Sum of all contribution records + calculated from active subs
+        const dynamicImpact = totalPoolGenerated * 0.1;
 
         return NextResponse.json({
-            totalMembers: activeSubscribers,
+            totalMembers: totalProfiles,
+            activeSubscribers: activeSubscribers,
+            pendingVerifications: pendingVerifications,
             totalPhilanthropy: dynamicImpact,
             avgPool: dynamicMonthlyPool,
         });

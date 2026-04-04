@@ -75,6 +75,8 @@ model Charity {
   id          String   @id @default(uuid())
   name        String
   description String
+  category    String   @default("General")
+  location    String   @default("Global")
   imageUrl    String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())

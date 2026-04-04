@@ -69,21 +69,29 @@ function generateMockClient() {
         $transaction: async (cb: any) => await cb(generateMockClient())
     };
 
+    const modelFallback = {
+        findMany: async () => [],
+        findUnique: async () => null,
+        findFirst: async () => null,
+        count: async () => 0,
+        create: async (args: any) => args.data,
+        update: async (args: any) => args.data,
+        delete: async () => ({}),
+        deleteMany: async () => ({ count: 0 }),
+        upsert: async (args: any) => args.update || args.create,
+        aggregate: async () => ({ _sum: { poolTotal: 0, totalDonated: 0 }, _count: 0 }),
+    };
+
     return new Proxy(mockData, {
         get: (target, prop) => {
             if (String(prop).startsWith('$')) return target[prop] || (async () => { });
-            if (prop in target) return target[prop as string];
-            return {
-                findMany: async () => [],
-                count: async () => 0,
-                findUnique: async () => null,
-                findFirst: async () => null,
-                create: async (args: any) => args.data,
-                delete: async () => ({}),
-                deleteMany: async () => ({ count: 0 }),
-                upsert: async (args: any) => args.update || args.create,
-                aggregate: async () => ({ _sum: { poolTotal: 0 } }),
-            };
+            const existing = target[prop as string] || {};
+            return new Proxy(existing, {
+                get: (subTarget, subProp) => {
+                    if (subProp in subTarget) return subTarget[subProp as string];
+                    return (modelFallback as any)[subProp as string] || (async () => null);
+                }
+            });
         }
     });
 }

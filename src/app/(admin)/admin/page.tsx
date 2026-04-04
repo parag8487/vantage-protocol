@@ -60,7 +60,7 @@ export default function AdminOverviewPage() {
                             <Heart className="h-4 w-4 text-red-500" />
                         </div>
                         <CardDescription className="text-neutral-500 text-[10px] font-black uppercase tracking-widest">Altruistic Capital</CardDescription>
-                        <CardTitle className="text-4xl font-serif italic tracking-tighter mt-1">${stats?.charityTotal?.toLocaleString() || '0'}</CardTitle>
+                        <CardTitle className="text-4xl font-serif italic tracking-tighter mt-1">${stats?.totalPhilanthropy?.toLocaleString() || '0'}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-[10px] font-bold text-neutral-500 tracking-widest uppercase italic">Reserved for Beneficiaries</p>
@@ -74,7 +74,7 @@ export default function AdminOverviewPage() {
                             <AlertCircle className="h-4 w-4 text-red-500" />
                         </div>
                         <CardDescription className="text-red-500 text-[10px] font-black uppercase tracking-widest">Action Priority</CardDescription>
-                        <CardTitle className="text-4xl font-serif italic tracking-tighter mt-1">24 Pending</CardTitle>
+                        <CardTitle className="text-4xl font-serif italic tracking-tighter mt-1">{stats?.pendingVerifications || '0'} Pending</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-[10px] font-bold text-red-400 tracking-widest uppercase underline-offset-4 underline">Verify submissions</p>
@@ -95,7 +95,7 @@ export default function AdminOverviewPage() {
                             <span className="text-[8px] font-black text-neutral-500 uppercase">Days Left</span>
                         </div>
                         <div className="h-20 w-32 rounded-2xl bg-neutral-800 border border-neutral-700 flex flex-col items-center justify-center">
-                            <span className="text-indigo-400 text-2xl font-black font-serif italic">$50k</span>
+                            <span className="text-indigo-400 text-2xl font-black font-serif italic">${((stats?.avgPool || 0) / 1000).toFixed(0)}k</span>
                             <span className="text-[8px] font-black text-neutral-500 uppercase">Current Pool</span>
                         </div>
                     </div>
