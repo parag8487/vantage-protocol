@@ -7,19 +7,21 @@ export async function POST(req: Request) {
     const prisma = getPrisma();
     try {
 
-        const { id, email, firstName, lastName } = await req.json();
+        const { id, email, firstName, lastName, selectedCharityId } = await req.json();
 
         const profile = await prisma.profile.upsert({
             where: { email },
             update: {
                 firstName,
                 lastName,
+                selectedCharityId,
             },
             create: {
                 id,
                 email,
                 firstName,
                 lastName,
+                selectedCharityId,
                 subscriptionStatus: 'INACTIVE',
             },
         });

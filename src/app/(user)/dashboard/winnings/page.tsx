@@ -50,7 +50,7 @@ export default function WinningsPage() {
                             <div className="relative z-10">
                                 <Badge className="bg-indigo-500 text-white border-none font-black text-[10px] uppercase px-4 py-1 mb-6">Asset Realization Open</Badge>
                                 <CardTitle className="text-4xl font-serif italic mb-4">Verification Queue</CardTitle>
-                                <CardDescription className="text-white/50 text-sm font-medium">Pending proof-of-performance uploads for recent matches.</CardDescription>
+                                <CardDescription className="text-white/50 text-sm font-medium">Please upload a **screenshot of your scores** from the golf platform to verify your performance.</CardDescription>
                             </div>
                         </CardHeader>
                         <CardContent className="p-0">

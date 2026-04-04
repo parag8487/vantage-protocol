@@ -25,11 +25,27 @@ function SignupComponent() {
     const { toast } = useToast()
 
     const [isLoading, setIsLoading] = useState(false)
+    const [charities, setCharities] = useState<any[]>([])
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        password: ''
+        password: '',
+        selectedCharityId: ''
+    })
+
+    useState(() => {
+        const fetchCharities = async () => {
+            const res = await fetch('/api/charities')
+            if (res.ok) {
+                const data = await res.json()
+                setCharities(data)
+                if (data.length > 0) {
+                    setFormData(prev => ({ ...prev, selectedCharityId: data[0].id }))
+                }
+            }
+        }
+        fetchCharities()
     })
 
     const handleSignup = async (e: React.FormEvent) => {
@@ -61,7 +77,8 @@ function SignupComponent() {
                     id: data.user?.id,
                     email: formData.email,
                     firstName: formData.firstName,
-                    lastName: formData.lastName
+                    lastName: formData.lastName,
+                    selectedCharityId: formData.selectedCharityId
                 })
             })
 
@@ -108,7 +125,8 @@ function SignupComponent() {
                         id: demoId,
                         email: formData.email || 'demo@vantage.golf',
                         firstName: formData.firstName || 'Vantage',
-                        lastName: formData.lastName || 'Elite'
+                        lastName: formData.lastName || 'Elite',
+                        selectedCharityId: formData.selectedCharityId
                     })
                 });
 
@@ -183,6 +201,19 @@ function SignupComponent() {
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase text-neutral-400 tracking-widest pl-1">Target Beneficiary</label>
+                            <select
+                                className="w-full rounded-2xl h-12 bg-neutral-50 border-neutral-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                required
+                                value={formData.selectedCharityId}
+                                onChange={(e) => setFormData({ ...formData, selectedCharityId: e.target.value })}
+                            >
+                                {charities.map(c => (
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <Button
                             disabled={isLoading}
